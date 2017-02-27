@@ -2,5 +2,6 @@
 <resources>
 
     <string name="app_name" translatable="false">Realidade Aumentada</string>
+    <string name="text_sample">-23.4567, -46.4568</string>
 
 </resources>

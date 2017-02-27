@@ -1,6 +1,7 @@
 package com.br.ar.my.samples;
 
 import android.content.Context;
+import android.location.Location;
 
 import com.beyondar.android.world.GeoObject;
 import com.beyondar.android.world.World;
@@ -15,7 +16,7 @@ public class CustomWorldHelper {
 
     public static World sharedWorld;
 
-    public static World generateObjects(Context context) {
+    public static World generateObjects(Context context, Location location) {
         if (sharedWorld != null) {
             return sharedWorld;
         }
@@ -27,30 +28,39 @@ public class CustomWorldHelper {
 
         // User position (you can change it using the GPS listeners form Android
         // API)
-        sharedWorld.setGeoPosition(41.90533734214473d, 2.565848038959814d);
+/*
+        double lat = 41.90533734214473d, lng = 2.565848038959814d;
+        if(location != null) {
+            lat =location.getLatitude();
+            lng =location.getLongitude();
+            sharedWorld.setGeoPosition(lat, lng);
+        }
+        else
+*/
+            sharedWorld.setGeoPosition(41.90533734214473d, 2.565848038959814d);
 
         // Create an object with an image in the app resources.
         GeoObject go1 = new GeoObject(1l);
         go1.setGeoPosition(41.90523339794433d, 2.565036406654116d);
         go1.setImageResource(R.drawable.googlelogo);
-        go1.setName("Creature 1");
+        go1.setName("GoogleLogo");
 
         GeoObject go2 = new GeoObject(2l);
         go1.setGeoPosition(41.90550959641445d, 2.565873388087619d);
         go1.setImageResource(R.drawable.creature_6);
-        go1.setName("Creature 1");
+        go1.setName("Creature 6");
 
 
         GeoObject go3 = new GeoObject(3l);
         go1.setGeoPosition(41.90518862002349d, 2.565662767707665d);
         go1.setImageResource(R.drawable.google_logo);
-        go1.setName("Creature 1");
+        go1.setName("Google_logo");
 
 
         GeoObject go4 = new GeoObject(4l);
-        go1.setGeoPosition(41.90550959641445d, 2.565873388087619d);
+        go1.setGeoPosition( -23.5570464f, -46.7328786f);
         go1.setImageResource(R.drawable.google_favicon_vector);
-        go1.setName("Creature 1");
+        go1.setName("Google Favicon Vector");
 /*
         // Is it also possible to load the image asynchronously form internet
         GeoObject go2 = new GeoObject(2l);
@@ -102,10 +112,10 @@ public class CustomWorldHelper {
         go10.setName("Far away");
 */
         // Add the GeoObjects to the world
-        sharedWorld.addBeyondarObject(go1, LIST_TYPE_EXAMPLE_1);
+        sharedWorld.addBeyondarObject(go1);
         sharedWorld.addBeyondarObject(go2);
         sharedWorld.addBeyondarObject(go3);
-        sharedWorld.addBeyondarObject(go4);
+        sharedWorld.addBeyondarObject(go4, LIST_TYPE_EXAMPLE_1);
         /*
         sharedWorld.addBeyondarObject(go2, LIST_TYPE_EXAMPLE_1);
         sharedWorld.addBeyondarObject(go3);

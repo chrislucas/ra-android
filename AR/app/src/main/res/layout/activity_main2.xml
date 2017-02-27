@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main2"
@@ -8,9 +8,23 @@
     tools:context="com.br.ar.my.samples.Main2Activity">
 
     <fragment
-        android:id="@+id/beyondarFragment"
+        android:id="@+id/beyondar_fragment"
         android:name="com.beyondar.android.fragment.BeyondarFragmentSupport"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+<!--
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/text_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_sample" />
+
+    </RelativeLayout>
+
+-->
+
+</FrameLayout>

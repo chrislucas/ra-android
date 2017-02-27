@@ -3,6 +3,7 @@ package com.br.ar.my.samples;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.hardware.SensorManager;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -10,12 +11,16 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.beyondar.android.fragment.BeyondarFragmentSupport;
 import com.beyondar.android.view.BeyondarGLSurfaceView;
+import com.beyondar.android.view.BeyondarViewAdapter;
 import com.beyondar.android.view.OnClickBeyondarObjectListener;
 import com.beyondar.android.view.OnTouchBeyondarViewListener;
 import com.beyondar.android.world.BeyondarObject;
@@ -41,19 +46,60 @@ public class Main2Activity extends AppCompatActivity {
     public static final String ACCESS_FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     public static final String ACCESS_COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
 
+
+    private TextView textLocation;
+
+
+    public static class ARViewAdapter extends BeyondarViewAdapter {
+
+        LayoutInflater layoutInflater;
+        public ARViewAdapter(Context context) {
+            super(context);
+            layoutInflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
+        }
+
+        @Override
+        public View getView(BeyondarObject beyondarObject, View view, ViewGroup viewGroup) {
+            return null;
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
         mBeyondarFragment = (BeyondarFragmentSupport) getSupportFragmentManager().findFragmentById(
-                R.id.beyondarFragment);
+                R.id.beyondar_fragment);
+
+        // textLocation = (TextView) findViewById(R.id.text_location);
 
         // We create the world and fill it ...
         //mWorld = CustomWorldHelper.generateObjects(this);
         // ... and send it to the fragment
         //mBeyondarFragment.setWorld(mWorld);
         //mBeyondarFragment.showFPS(true);
+
+
+        mBeyondarFragment.setSensorDelay(SensorManager.SENSOR_DELAY_NORMAL);
+        
+        if (ActivityCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) != PERMISSION_GRANTED
+                || ActivityCompat.checkSelfPermission(this, ACCESS_COARSE_LOCATION) != PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                    this
+                    ,new String [] {ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION}
+                    , REQUEST_PERMISSION_LOCATION
+            );
+        }
+
+        else {
+            location = LocationSourceImpl.find(this);
+            updateTextLocation(location);
+            // We also can see the Frames per seconds
+            World world = CustomWorldHelper.generateObjects(this, location); //init(this);
+            mBeyondarFragment.setWorld(world);
+        }
+        requestPermissions();
 
         final Context context = this;
         mBeyondarFragment.setOnTouchBeyondarViewListener(new OnTouchBeyondarViewListener() {
@@ -69,6 +115,12 @@ public class Main2Activity extends AppCompatActivity {
                             Toast.makeText(context, "GLSurface", Toast.LENGTH_SHORT).show();
                         }
                     });
+                }
+
+                ArrayList<BeyondarObject> beyondarObjects = new ArrayList<BeyondarObject>();
+                beyondarGLSurfaceView.getBeyondarObjectsOnScreenCoordinates(x, y, beyondarObjects);
+                for(BeyondarObject beyondarObject : beyondarObjects) {
+                    Log.i("BEYOND_OBJECTS", beyondarObject.getName());
                 }
             }
         });
@@ -89,22 +141,19 @@ public class Main2Activity extends AppCompatActivity {
         });
 
 
-        if (ActivityCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) != PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this, ACCESS_COARSE_LOCATION) != PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(
-                    this
-                    ,new String [] {ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION}
-                    , REQUEST_PERMISSION_LOCATION
-            );
-        }
+    }
 
-        else {
-            location = LocationSourceImpl.find(this);
-            // We also can see the Frames per seconds
-            World world = CustomWorldHelper.generateObjects(this); //init(this);
-            mBeyondarFragment.setWorld(world);
+
+    private void updateTextLocation(Location location) {
+        if(location != null) {
+            String fmt = String.format("Altitude: %f\nLat: %f, Lon: %f\nBearing: %f"
+                ,location.getAltitude()
+                ,location.getLatitude()
+                ,location.getLongitude()
+                ,location.getBearing()
+            );
+            //textLocation.setText(fmt);
         }
-        requestPermissions();
     }
 
     private World init(Context context) {
@@ -129,7 +178,6 @@ public class Main2Activity extends AppCompatActivity {
         go1.setName("Creature 1");
         //go1.setImageUri("http://beyondar.com/sites/default/files/logo_reduced.png");
         //go1.setImageUri("/sdcard/someImageInYourSDcard.jpeg");
-
 
 // And the same goes for the app assets
         GeoObject go2 = new GeoObject(2l);
@@ -182,7 +230,10 @@ public class Main2Activity extends AppCompatActivity {
             case REQUEST_PERMISSION_LOCATION:
                 if(grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     location = LocationSourceImpl.find(this);
-                    init(this);
+                    updateTextLocation(location);
+                    World world = CustomWorldHelper.generateObjects(this, location); //init(this);
+                    mBeyondarFragment.setWorld(world);
+                    //init(this);
                 }
                 break;
 
