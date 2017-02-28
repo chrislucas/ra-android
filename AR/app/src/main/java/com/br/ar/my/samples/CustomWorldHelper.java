@@ -35,9 +35,9 @@ public class CustomWorldHelper {
             double lat = location.getLatitude();
             double lng = location.getLongitude();
             //double alt = location.getAltitude();
-
-            double offSetLat = .000010d;
-            double offSetLng = .000015d;
+            double offSetLat = .00015d;
+            double offSetLng = .00015d;
+            Log.i("CENTER_RADAR", String.format("%f %f", lat + (-offSetLat), lng + (-offSetLng)));
             sharedWorld.setGeoPosition(lat + (-offSetLat), lng + (-offSetLng) );
 
             GeoObject go4 = new GeoObject(4l);
@@ -84,12 +84,11 @@ public class CustomWorldHelper {
                 ,R.drawable.ccsl
             };
             double accLat = -offSetLat, accLng = -offSetLng, newLat = lat, newLng = lng;
-            //Random random = new Random();
             for(int i=0; i<15; i++) {
                 GeoObject go = new GeoObject(i + 6L);
                 go.setImageResource(images[ i % images.length ]);
-                newLat += -.000010d; //randomDouble(lat, lat - .0000000005d);
-                newLng += -.000015d; //randomDouble(lng, lng - .0000000015d);
+                newLat = randomDouble(lat, lat + (-.0010d)); /*-.000010d;*/ //
+                newLng = randomDouble(lng, lng + (-.0015d)); /*-.000015d;*/ //
                 go.setGeoPosition(newLat, newLng);
                 String name = String.format("Image %d %f %f", go.getId(), newLat, newLng);
                 Log.i("NAME_OBJ", name);
