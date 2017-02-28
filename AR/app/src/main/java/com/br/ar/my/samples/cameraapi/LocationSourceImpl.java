@@ -12,9 +12,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.br.ar.R;
 import com.google.android.gms.maps.LocationSource;
 
 import java.util.List;
@@ -49,7 +51,8 @@ public class LocationSourceImpl implements LocationSource, ActivityCompat.OnRequ
                                 ,location.getLongitude()
                                 ,location.getBearing()
                         );
-                        Toast.makeText(activity, fmt, Toast.LENGTH_LONG).show();
+                        TextView textLocation = (TextView) activity.findViewById(R.id.text_location);
+                        textLocation.setText(fmt);
                     }
                 });
             }
@@ -139,7 +142,7 @@ public class LocationSourceImpl implements LocationSource, ActivityCompat.OnRequ
                 location = locationManager.getLastKnownLocation(enabledProvider);
 
                 if(location != null) {
-                    Log.i("LOCATION", String.format("%f %f\n%f %f", location.getLatitude(), location.getLongitude()
+                    Log.i("FIND_LOCATION", String.format("%f %f\n%f %f", location.getLatitude(), location.getLongitude()
                             ,location.getAltitude(), location.getBearing()));
                 }
             }

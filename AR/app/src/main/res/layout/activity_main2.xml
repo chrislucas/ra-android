@@ -12,8 +12,25 @@
         android:name="com.beyondar.android.fragment.BeyondarFragmentSupport"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-<!--
+
+    <FrameLayout
+        android:id="@+id/layout_radar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|top"
+        android:background="@drawable/radar_bg_small"
+        tools:ignore="RtlHardcoded">
+
+        <com.beyondar.android.plugin.radar.RadarView
+            android:id="@+id/radarView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/radar_north_small" />
+
+    </FrameLayout>
+
     <RelativeLayout
+        android:id="@+id/wrapper_radar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -21,10 +38,37 @@
             android:id="@+id/text_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/text_sample" />
+            android:text="@string/text_sample"
+            android:textSize="20sp"
+            android:textColor="@color/base_red"
+            />
 
     </RelativeLayout>
 
--->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom">
+
+        <TextView
+            android:id="@+id/text_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textColor="@color/base_red"
+            android:text="@string/text_sample_distance" />
+
+        <SeekBar
+            android:id="@+id/seekBarMaxDistance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text_distance"
+            android:maxHeight="15sp"
+            android:minHeight="15sp"
+            android:layout_toRightOf="@id/text_distance"
+            tools:ignore="RtlHardcoded" />
+
+    </RelativeLayout>
 
 </FrameLayout>
