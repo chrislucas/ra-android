@@ -84,11 +84,11 @@ public class CustomWorldHelper {
                 ,R.drawable.ccsl
             };
             double accLat = -offSetLat, accLng = -offSetLng, newLat = lat, newLng = lng;
-            for(int i=0; i<15; i++) {
+            for(int i=0; i<7; i++) {
                 GeoObject go = new GeoObject(i + 6L);
                 go.setImageResource(images[ i % images.length ]);
-                newLat = randomDouble(lat, lat + (-.0010d)); /*-.000010d;*/ //
-                newLng = randomDouble(lng, lng + (-.0015d)); /*-.000015d;*/ //
+                newLat = randomDouble(lat, lat + (-.00010d)); /*-.000010d;*/ //
+                newLng = randomDouble(lng, lng + (-.00015d)); /*-.000015d;*/ //
                 go.setGeoPosition(newLat, newLng);
                 String name = String.format("Image %d %f %f", go.getId(), newLat, newLng);
                 Log.i("NAME_OBJ", name);
